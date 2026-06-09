@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DISO Test Data</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+        h1 { font-size: 1.25rem; }
+        label { display: block; margin-top: 1rem; font-weight: 600; font-size: 0.9rem; }
+        input, select, button { width: 100%; margin-top: 0.25rem; padding: 0.5rem; }
+        .buttons { display: grid; gap: 0.5rem; margin-top: 1rem; }
+        button { cursor: pointer; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        #log {
+            margin-top: 1rem; padding: 0.75rem; background: #111; color: #0f0;
+            font-family: monospace; font-size: 0.8rem; white-space: pre-wrap;
+            min-height: 160px; border-radius: 4px; max-height: 50vh; overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<h1>DISO Test Data Tools</h1>
+
+<label for="token">Bearer token</label>
+<input id="token" type="password" placeholder="Paste from DevTools → Network → Authorization header" />
+
+<div class="buttons">
+    <button id="btn-security-plan" type="button">Create security plan test data</button>
+    <button id="btn-policies" type="button">Approve all policies &amp; controls</button>
+</div>
+
+<pre id="log"></pre>
+
+<script>
+    const mockPlan = {
+        name: 'test',
+        startingDate: new Date().toISOString().split('T')[0],
+        planLength: 4,
+        budgetTypeId: 2,
+        selectedStrategyOptionId: 1,
+        selectedControlPrioritizationOptionId: 2,
+    };
+
+    const selectQuarterMock = {
+        riskInPlanId: '483a139c-85ca-44bd-9427-55e3dd9beda1',
+        planId: 'f0480d9c-a380-4ee7-92b3-5367b5cf2474',
+        targetDateChanged: true,
+        newTargetDate: 'immediate',
+        rimsChanged: true,
+        selectedRimsId: '2fa8d6a2-8a5a-47f3-8253-b5b759434fb0',
+        statusChanged: true,
+        newStatus: 'Mitigation',
+    };
+
+    const targetDateMock = ['immediate', 'Q3 2026', 'Q4 2026', 'Q1 2027'];
+
+    // PASTE mockRisks from create-testing-data.component.ts (lines 26-1433)
+    // Change "mockRisks: any = " to "const mockRisks = "
+    const mockRisks = [
+        {
+            planId: 'f0480d9c-a380-4ee7-92b3-5367b5cf2474',
+            riskInOrgId: null,
+            controlMappings: [
+                {
+                    controlTemplateId: '53588a9f-1edf-426f-b594-e8dff6d0cd3c',
+                    assetTypeIds: ['83c15a0b-89b0-4806-a3b2-4abd444f24b0'],
+                },
+            ],
+            riskTemplateId: '2f4406a7-2182-4b7b-91be-b6902d7f3e64',
+            instigators: null,
+            likelihoodLevelId: 1,
+            impactLevelId: 3,
+            financialImpact: '123',
+            actionMappings: [
+                {
+                    controlTemplateIds: ['53588a9f-1edf-426f-b594-e8dff6d0cd3c'],
+                    actionId: '019c4c1d-e246-7e7b-8354-dff3d2000dd0',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: '83c15a0b-89b0-4806-a3b2-4abd444f24b0',
+                            selectedToolId: '6bc2be6c-8944-4be1-83d2-6b16db1853c1',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '9659a9fe-e356-430e-a368-a4b096243937',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            planId: 'f0480d9c-a380-4ee7-92b3-5367b5cf2474',
+            riskInOrgId: null,
+            controlMappings: [
+                {
+                    controlTemplateId: 'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '56a19b49-6dab-4977-83e7-35899ec0ba5e',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '0e45634a-e4e8-48cb-bfde-08eeec27baa5',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+            ],
+            riskTemplateId: '3a94a067-e78d-4f2f-98c8-d977b81f013c',
+            instigators: null,
+            likelihoodLevelId: 6,
+            impactLevelId: 6,
+            financialImpact: '1233',
+            actionMappings: [
+                {
+                    controlTemplateIds: [
+                        '0e45634a-e4e8-48cb-bfde-08eeec27baa5',
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        '56a19b49-6dab-4977-83e7-35899ec0ba5e',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '0dfa35d3-2002-4fef-b5e2-9e5aba547b75',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '0e45634a-e4e8-48cb-bfde-08eeec27baa5',
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        '56a19b49-6dab-4977-83e7-35899ec0ba5e',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'ae83427e-3301-4d79-a48c-feab0442b716',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '3a032d83-eaff-4dc1-b376-c901dc534256',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '8b35d2bc-092f-4eb9-ad1f-659d4045eb7f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '6f534b1b-a03c-48db-bcbd-93dde864dd2f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '5ff84448-4b6d-410d-a135-0dc3ec8c7158',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'e8ec75b7-0755-4b85-8647-a8ad5415997f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'dae0185b-20ff-4ba1-b93a-7fc1af789304',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: '739e6795-1bba-4e39-a63b-8361a31cb799',
+                            selectedLicenseTypeId: '019e62ec-d004-7730-bead-2e184e2d68c3',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'eb2f1610-a62d-4994-8884-ebfdd8bb6029',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'beb795f5-dfee-4841-bc6d-ab2e1e2f9d1f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '5d8ff2f9-f358-42ff-b991-837039cbe2c7',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '7c807c03-400a-4247-92f0-0b1857c58e94',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'adcd7c41-5a4d-4eb1-99dd-09b7d31a268a',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '6bc2be6c-8944-4be1-83d2-6b16db1853c1',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: 'cd25ebc4-502f-4b70-9ab0-02c335a8578f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'cd4a49b7-944b-42b0-8121-ca64e19c9b1a',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '6bc2be6c-8944-4be1-83d2-6b16db1853c1',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: 'cd25ebc4-502f-4b70-9ab0-02c335a8578f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'b1c9b84f-73e9-45e9-867b-9e58c16dd0cb',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: ['4dc36904-a77f-4873-9435-ed380258cc1a'],
+                    actionId: 'ce79057a-1057-4056-8ec8-fe52b2009a8b',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            planId: 'f0480d9c-a380-4ee7-92b3-5367b5cf2474',
+            riskInOrgId: null,
+            controlMappings: [
+                {
+                    controlTemplateId: 'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '56a19b49-6dab-4977-83e7-35899ec0ba5e',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '0e45634a-e4e8-48cb-bfde-08eeec27baa5',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+            ],
+            riskTemplateId: 'cd8dfa26-633e-4f00-976f-0c0dc9c4dab5',
+            instigators: null,
+            likelihoodLevelId: 3,
+            impactLevelId: 2,
+            financialImpact: '122',
+            actionMappings: [
+                {
+                    controlTemplateIds: [
+                        '0e45634a-e4e8-48cb-bfde-08eeec27baa5',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        '56a19b49-6dab-4977-83e7-35899ec0ba5e',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '0dfa35d3-2002-4fef-b5e2-9e5aba547b75',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '0e45634a-e4e8-48cb-bfde-08eeec27baa5',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        '56a19b49-6dab-4977-83e7-35899ec0ba5e',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'ae83427e-3301-4d79-a48c-feab0442b716',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: ['4dc36904-a77f-4873-9435-ed380258cc1a'],
+                    actionId: 'ce79057a-1057-4056-8ec8-fe52b2009a8b',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '7c807c03-400a-4247-92f0-0b1857c58e94',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'dae0185b-20ff-4ba1-b93a-7fc1af789304',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: '739e6795-1bba-4e39-a63b-8361a31cb799',
+                            selectedLicenseTypeId: '019e62ec-d004-7730-bead-2e184e2d68c3',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'eb2f1610-a62d-4994-8884-ebfdd8bb6029',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '5d8ff2f9-f358-42ff-b991-837039cbe2c7',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'b1c9b84f-73e9-45e9-867b-9e58c16dd0cb',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '3a032d83-eaff-4dc1-b376-c901dc534256',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'adcd7c41-5a4d-4eb1-99dd-09b7d31a268a',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '6bc2be6c-8944-4be1-83d2-6b16db1853c1',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: 'cd25ebc4-502f-4b70-9ab0-02c335a8578f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'cd4a49b7-944b-42b0-8121-ca64e19c9b1a',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '6bc2be6c-8944-4be1-83d2-6b16db1853c1',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: 'cd25ebc4-502f-4b70-9ab0-02c335a8578f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '5ff84448-4b6d-410d-a135-0dc3ec8c7158',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '8b35d2bc-092f-4eb9-ad1f-659d4045eb7f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '6f534b1b-a03c-48db-bcbd-93dde864dd2f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'e8ec75b7-0755-4b85-8647-a8ad5415997f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'beb795f5-dfee-4841-bc6d-ab2e1e2f9d1f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            planId: 'f0480d9c-a380-4ee7-92b3-5367b5cf2474',
+            riskInOrgId: null,
+            controlMappings: [
+                {
+                    controlTemplateId: '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+            ],
+            riskTemplateId: '65fc35dd-035e-4d92-8004-769c8f09b224',
+            instigators: null,
+            likelihoodLevelId: 4,
+            impactLevelId: 3,
+            financialImpact: '222',
+            actionMappings: [
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: 'beb795f5-dfee-4841-bc6d-ab2e1e2f9d1f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: '7c807c03-400a-4247-92f0-0b1857c58e94',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: 'dae0185b-20ff-4ba1-b93a-7fc1af789304',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: '739e6795-1bba-4e39-a63b-8361a31cb799',
+                            selectedLicenseTypeId: '019e62ec-d004-7730-bead-2e184e2d68c3',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: 'eb2f1610-a62d-4994-8884-ebfdd8bb6029',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: '5d8ff2f9-f358-42ff-b991-837039cbe2c7',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: 'b1c9b84f-73e9-45e9-867b-9e58c16dd0cb',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: '3a032d83-eaff-4dc1-b376-c901dc534256',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: '5ff84448-4b6d-410d-a135-0dc3ec8c7158',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: 'e8ec75b7-0755-4b85-8647-a8ad5415997f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: '8b35d2bc-092f-4eb9-ad1f-659d4045eb7f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '6f534b1b-a03c-48db-bcbd-93dde864dd2f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: 'cd4a49b7-944b-42b0-8121-ca64e19c9b1a',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '6bc2be6c-8944-4be1-83d2-6b16db1853c1',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: 'cd25ebc4-502f-4b70-9ab0-02c335a8578f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: 'adcd7c41-5a4d-4eb1-99dd-09b7d31a268a',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '6bc2be6c-8944-4be1-83d2-6b16db1853c1',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: 'cd25ebc4-502f-4b70-9ab0-02c335a8578f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: 'ae83427e-3301-4d79-a48c-feab0442b716',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    ],
+                    actionId: '0dfa35d3-2002-4fef-b5e2-9e5aba547b75',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: ['4dc36904-a77f-4873-9435-ed380258cc1a'],
+                    actionId: 'ce79057a-1057-4056-8ec8-fe52b2009a8b',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            planId: 'f0480d9c-a380-4ee7-92b3-5367b5cf2474',
+            riskInOrgId: null,
+            controlMappings: [
+                {
+                    controlTemplateId: '53588a9f-1edf-426f-b594-e8dff6d0cd3c',
+                    assetTypeIds: ['83c15a0b-89b0-4806-a3b2-4abd444f24b0'],
+                },
+            ],
+            riskTemplateId: '8c647f27-791f-40aa-a80d-05aef3230077',
+            instigators: null,
+            likelihoodLevelId: 3,
+            impactLevelId: 3,
+            financialImpact: '3333',
+            actionMappings: [
+                {
+                    controlTemplateIds: ['53588a9f-1edf-426f-b594-e8dff6d0cd3c'],
+                    actionId: '019c4c1d-e246-7e7b-8354-dff3d2000dd0',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: '83c15a0b-89b0-4806-a3b2-4abd444f24b0',
+                            selectedToolId: '6bc2be6c-8944-4be1-83d2-6b16db1853c1',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '9659a9fe-e356-430e-a368-a4b096243937',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            planId: 'f0480d9c-a380-4ee7-92b3-5367b5cf2474',
+            riskInOrgId: null,
+            controlMappings: [
+                {
+                    controlTemplateId: 'c4ab6261-b47e-48d6-9f1b-eb42d13c8bf2',
+                    assetTypeIds: [
+                        'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                        '83c15a0b-89b0-4806-a3b2-4abd444f24b0',
+                    ],
+                },
+            ],
+            riskTemplateId: '3f4fe739-c21a-4198-b1f6-50e938307b89',
+            instigators: null,
+            likelihoodLevelId: 3,
+            impactLevelId: 3,
+            financialImpact: '333',
+            actionMappings: [
+                {
+                    controlTemplateIds: ['c4ab6261-b47e-48d6-9f1b-eb42d13c8bf2'],
+                    actionId: '019c4c00-1b7a-7fc2-a808-e1751f9d36eb',
+                    isUnified: false,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '3afdccea-bc2f-497f-ae86-abb9f5d71627',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: 'f13dabeb-baaf-44d6-83a3-1d236f38e01a',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                        {
+                            assetTypeId: '83c15a0b-89b0-4806-a3b2-4abd444f24b0',
+                            selectedToolId: '019dbadf-9f66-7724-ae15-29a92f2ac5b3',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '019dbadf-b197-7a0a-bdff-414853839745',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            planId: 'f0480d9c-a380-4ee7-92b3-5367b5cf2474',
+            riskInOrgId: null,
+            controlMappings: [
+                {
+                    controlTemplateId: 'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '4dc36904-a77f-4873-9435-ed380258cc1a',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '56a19b49-6dab-4977-83e7-35899ec0ba5e',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+                {
+                    controlTemplateId: '0e45634a-e4e8-48cb-bfde-08eeec27baa5',
+                    assetTypeIds: ['cc52c722-94b1-4ea8-b6aa-62f10c17c1ae'],
+                },
+            ],
+            riskTemplateId: '3763221f-bc10-42d5-9f4e-6e07cc138b58',
+            instigators: null,
+            likelihoodLevelId: 3,
+            impactLevelId: 3,
+            financialImpact: '444',
+            actionMappings: [
+                {
+                    controlTemplateIds: [
+                        '0e45634a-e4e8-48cb-bfde-08eeec27baa5',
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        '56a19b49-6dab-4977-83e7-35899ec0ba5e',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '0dfa35d3-2002-4fef-b5e2-9e5aba547b75',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '0e45634a-e4e8-48cb-bfde-08eeec27baa5',
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        '56a19b49-6dab-4977-83e7-35899ec0ba5e',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'ae83427e-3301-4d79-a48c-feab0442b716',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '3a032d83-eaff-4dc1-b376-c901dc534256',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '8b35d2bc-092f-4eb9-ad1f-659d4045eb7f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '6f534b1b-a03c-48db-bcbd-93dde864dd2f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '5ff84448-4b6d-410d-a135-0dc3ec8c7158',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'e8ec75b7-0755-4b85-8647-a8ad5415997f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'dae0185b-20ff-4ba1-b93a-7fc1af789304',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: '739e6795-1bba-4e39-a63b-8361a31cb799',
+                            selectedLicenseTypeId: '019e62ec-d004-7730-bead-2e184e2d68c3',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'eb2f1610-a62d-4994-8884-ebfdd8bb6029',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'beb795f5-dfee-4841-bc6d-ab2e1e2f9d1f',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '5d8ff2f9-f358-42ff-b991-837039cbe2c7',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: '7c807c03-400a-4247-92f0-0b1857c58e94',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'adcd7c41-5a4d-4eb1-99dd-09b7d31a268a',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '6bc2be6c-8944-4be1-83d2-6b16db1853c1',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: 'cd25ebc4-502f-4b70-9ab0-02c335a8578f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'cd4a49b7-944b-42b0-8121-ca64e19c9b1a',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '6bc2be6c-8944-4be1-83d2-6b16db1853c1',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: 'cd25ebc4-502f-4b70-9ab0-02c335a8578f',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: [
+                        '359fc5a8-006a-4bb8-9237-6f50fccf110b',
+                        '4dc36904-a77f-4873-9435-ed380258cc1a',
+                        'aaf047be-59e2-4c99-896c-1c82142fcae6',
+                    ],
+                    actionId: 'b1c9b84f-73e9-45e9-867b-9e58c16dd0cb',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '9a710dab-7849-4cd8-bb2a-cf20b09fea9d',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '3341db97-f1d4-44de-94ef-19ac3d9d512e',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+                {
+                    controlTemplateIds: ['4dc36904-a77f-4873-9435-ed380258cc1a'],
+                    actionId: 'ce79057a-1057-4056-8ec8-fe52b2009a8b',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: null,
+                            selectedServiceId: 'bd680a0a-6200-4973-a04a-499ce52d8df7',
+                            selectedLicenseTypeId: '5033712d-a0fc-4c68-aaa6-8c9c5083be3d',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            planId: 'f0480d9c-a380-4ee7-92b3-5367b5cf2474',
+            riskInOrgId: null,
+            controlMappings: [
+                {
+                    controlTemplateId: '4ff7cd7c-3057-4aec-bc66-9cd89e2e34f8',
+                    assetTypeIds: [
+                        '83c15a0b-89b0-4806-a3b2-4abd444f24b0',
+                        'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                    ],
+                },
+            ],
+            riskTemplateId: '8561f58a-f08e-4adb-b87b-d2003fa8e6d3',
+            instigators: null,
+            likelihoodLevelId: 4,
+            impactLevelId: 1,
+            financialImpact: '33',
+            actionMappings: [
+                {
+                    controlTemplateIds: ['4ff7cd7c-3057-4aec-bc66-9cd89e2e34f8'],
+                    actionId: '019c4bfe-2053-7173-9fea-74575780acc1',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: '83c15a0b-89b0-4806-a3b2-4abd444f24b0',
+                            selectedToolId: '5eaf1069-513c-4206-97e8-a13c70929fe8',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '0210a129-3b7e-4540-b53b-326203451ed5',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                        {
+                            assetTypeId: 'cc52c722-94b1-4ea8-b6aa-62f10c17c1ae',
+                            selectedToolId: '5eaf1069-513c-4206-97e8-a13c70929fe8',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '0210a129-3b7e-4540-b53b-326203451ed5',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            planId: 'f0480d9c-a380-4ee7-92b3-5367b5cf2474',
+            riskInOrgId: null,
+            controlMappings: [
+                {
+                    controlTemplateId: '983543b5-7a16-46d6-b7e9-576817e747e9',
+                    assetTypeIds: ['83c15a0b-89b0-4806-a3b2-4abd444f24b0'],
+                },
+            ],
+            riskTemplateId: '834250b6-fd30-48a4-8e66-64882ecbaf6f',
+            instigators: null,
+            likelihoodLevelId: 3,
+            impactLevelId: 1,
+            financialImpact: '445',
+            actionMappings: [
+                {
+                    controlTemplateIds: ['983543b5-7a16-46d6-b7e9-576817e747e9'],
+                    actionId: '019c4c1f-8a1b-7cc5-ba4c-97055e954c96',
+                    isUnified: true,
+                    assetTypeSolutions: [
+                        {
+                            assetTypeId: '83c15a0b-89b0-4806-a3b2-4abd444f24b0',
+                            selectedToolId: '1a1856d6-c2e3-4b7a-a1bb-7fc8ba1956ac',
+                            selectedServiceId: null,
+                            selectedLicenseTypeId: '019e62cb-9aab-7658-ae63-ab58dbc0332c',
+                            isToolManual: false,
+                            isServiceManual: false,
+                        },
+                    ],
+                },
+            ],
+        },
+    ];
+
+    const logEl = document.getElementById('log');
+    const btnPolicies = document.getElementById('btn-policies');
+    const btnSecurityPlan = document.getElementById('btn-security-plan');
+
+    function log(msg) {
+        logEl.textContent += msg + '\n';
+        logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function clearLog() {
+        logEl.textContent = '';
+    }
+
+    function getConfig() {
+        return {
+            baseUrl: 'https://bediso-dev.cisomate.com/api',
+            token: document.getElementById('token').value.trim(),
+        };
+    }
+
+    function setBusy(busy) {
+        btnPolicies.disabled = busy;
+        btnSecurityPlan.disabled = busy;
+    }
+
+    async function api(baseUrl, token, path, options = {}) {
+        const res = await fetch(baseUrl + path, {
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+                ...(options.headers || {}),
+            },
+            ...options,
+        });
+
+        if (!res.ok) {
+            const text = await res.text();
+            throw new Error((options.method || 'GET') + ' ' + path + ' -> ' + res.status + ': ' + text);
+        }
+
+        if (res.status === 204) return null;
+
+        const ct = res.headers.get('content-type') || '';
+        if (ct.includes('application/json')) return res.json();
+
+        const text = await res.text();
+        try { return JSON.parse(text); } catch { return text; }
+    }
+
+    // create-policies-test.component.ts
+    async function createPoliciesTestData(baseUrl, token) {
+        log('Fetching policies...');
+        const { policies } = await api(baseUrl, token, '/CMDISOPolicy/GetPolicyCoverage');
+
+        if (!policies?.length) {
+            log('No policies found.');
+            return;
+        }
+
+        log('Found ' + policies.length + ' policies.');
+
+        for (const policy of policies) {
+            log('Policy: ' + (policy.policyName || policy.id));
+            const controls = await api(
+                baseUrl, token,
+                '/CMDISOControlForPolicy/ControlsForPolicy?policyId=' + encodeURIComponent(policy.id),
+            );
+            log('  ' + controls.length + ' controls');
+
+            for (const control of controls) {
+                await api(baseUrl, token, '/CMDISOControlForPolicy/UpdateControlStatus', {
+                    method: 'PUT',
+                    body: JSON.stringify({ policyId: policy.id, controlId: control.id, state: 'Approved' }),
+                });
+                log('  control approved: ' + control.id);
+            }
+        }
+
+        for (const policy of policies) {
+            await api(baseUrl, token, '/CMDISOPolicy/' + policy.id + ':approve', {
+                method: 'POST',
+                body: '{}',
+            });
+            log('Policy approved: ' + (policy.policyName || policy.id));
+        }
+
+        log('Done.');
+    }
+
+    // create-testing-data.component.ts → createEverythingBlyat()
+    async function createSecurityPlanTestData(baseUrl, token) {
+        log('Creating security plan...');
+        const planId = await api(baseUrl, token, '/CMDISOSecurityPlan/CreateUpdatePlan', {
+            method: 'POST',
+            body: JSON.stringify(mockPlan),
+        });
+        log('Plan created: ' + planId);
+
+        for (let i = 0; i < mockRisks.length; i++) {
+            const risk = mockRisks[i];
+            log('Saving risk ' + (i + 1) + '/' + mockRisks.length + '...');
+
+            const saveManual = await api(baseUrl, token, '/CMDISORiskInOrg/SaveManual', {
+                method: 'POST',
+                body: JSON.stringify({ ...risk, planId }),
+            });
+
+            const dto = {
+                ...selectQuarterMock,
+                newTargetDate: targetDateMock[Math.floor(Math.random() * targetDateMock.length)],
+                planId,
+                riskInPlanId: saveManual.riskInOrgId,
+                selectedRimsId: saveManual.rimsId,
+            };
+
+            await api(baseUrl, token, '/CMDISORiskInOrg/SavePlanSimulationChange', {
+                method: 'POST',
+                body: JSON.stringify(dto),
+            });
+
+            log('  risk saved: ' + saveManual.riskInOrgId);
+        }
+
+        await api(baseUrl, token, '/CMDISOSecurityPlan/UpdatePlanStatus', {
+            method: 'PUT',
+            body: JSON.stringify({ planId, newStatusId: 2 }),
+        });
+
+        log('Plan status updated. Done.');
+    }
+
+    async function run(fn) {
+        clearLog();
+        const { baseUrl, token } = getConfig();
+        if (!token) { log('Error: paste a bearer token first.'); return; }
+        setBusy(true);
+        try { await fn(baseUrl, token); }
+        catch (err) { log('Error: ' + err.message); console.error(err); }
+        finally { setBusy(false); }
+    }
+
+    btnPolicies.addEventListener('click', () => run(createPoliciesTestData));
+    btnSecurityPlan.addEventListener('click', () => run(createSecurityPlanTestData));
+</script>
+</body>
+</html>
