@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>create data blyat</title>
+    <title>DISO Test Data</title>
     <style>
         * { box-sizing: border-box; }
         body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
@@ -29,6 +29,7 @@
 <div class="buttons">
     <button id="btn-security-plan" type="button">Create security plan test data</button>
     <button id="btn-policies" type="button">Approve all policies &amp; controls</button>
+    <button id="btn-procedures" type="button">Quick-approve &amp; activate all procedures</button>
 </div>
 
 <pre id="log"></pre>
@@ -1467,9 +1468,22 @@
         },
     ];
 
+    const TOKEN_STORAGE_KEY = 'diso-bearer-token';
+
     const logEl = document.getElementById('log');
+    const tokenEl = document.getElementById('token');
     const btnPolicies = document.getElementById('btn-policies');
     const btnSecurityPlan = document.getElementById('btn-security-plan');
+    const btnProcedures = document.getElementById('btn-procedures');
+
+    const savedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (savedToken) tokenEl.value = savedToken;
+
+    tokenEl.addEventListener('input', () => {
+        const value = tokenEl.value.trim();
+        if (value) localStorage.setItem(TOKEN_STORAGE_KEY, value);
+        else localStorage.removeItem(TOKEN_STORAGE_KEY);
+    });
 
     function log(msg) {
         logEl.textContent += msg + '\n';
@@ -1483,13 +1497,14 @@
     function getConfig() {
         return {
             baseUrl: 'https://bediso-dev.cisomate.com/api',
-            token: document.getElementById('token').value.trim(),
+            token: tokenEl.value.trim(),
         };
     }
 
     function setBusy(busy) {
         btnPolicies.disabled = busy;
         btnSecurityPlan.disabled = busy;
+        btnProcedures.disabled = busy;
     }
 
     async function api(baseUrl, token, path, options = {}) {
@@ -1557,6 +1572,44 @@
         log('Done.');
     }
 
+    async function approveAndActivateProcedures(baseUrl, token) {
+        log('Fetching procedures...');
+        const { procedures } = await api(baseUrl, token, '/CMDISOProcedure');
+
+        if (!procedures?.length) {
+            log('No procedures found.');
+            return;
+        }
+
+        log('Found ' + procedures.length + ' procedures.');
+
+        for (const procedure of procedures) {
+            log('Quick-approving procedure: ' + procedure.procedureId);
+            await api(baseUrl, token, '/CMDISOProcedure/' + procedure.procedureId + '/items/quickapprove', {
+                method: 'POST',
+                body: JSON.stringify({ scope: 2 }),
+            });
+            log('  quick-approve done: ' + procedure.procedureId);
+        }
+
+        for (const procedure of procedures) {
+            const correlationId = crypto.randomUUID();
+            log('Activating procedure: ' + procedure.procedureId);
+            await api(baseUrl, token, '/CMDISOProcedure/' + procedure.procedureId + '/activate', {
+                method: 'POST',
+                body: JSON.stringify({ correlationId: correlationId }),
+            });
+            log('  activated: ' + procedure.procedureId + ' (correlationId: ' + correlationId + ')');
+        }
+
+        log('Procedure IDs:');
+        for (const procedure of procedures) {
+            log(procedure.procedureId);
+        }
+
+        log('Done.');
+    }
+
     // create-testing-data.component.ts → createEverythingBlyat()
     async function createSecurityPlanTestData(baseUrl, token) {
         log('Creating security plan...');
@@ -1611,6 +1664,7 @@
 
     btnPolicies.addEventListener('click', () => run(createPoliciesTestData));
     btnSecurityPlan.addEventListener('click', () => run(createSecurityPlanTestData));
+    btnProcedures.addEventListener('click', () => run(approveAndActivateProcedures));
 </script>
 </body>
 </html>
